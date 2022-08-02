@@ -22,11 +22,69 @@
      <x>0</x>
      <y>0</y>
      <width>1200</width>
-     <height>21</height>
+     <height>26</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menufrf">
+    <property name="title">
+     <string>Download</string>
+    </property>
+    <addaction name="action_download_video"/>
+    <addaction name="action_download_videos"/>
+    <addaction name="action_stop_download"/>
+   </widget>
+   <widget class="QMenu" name="menuUpload">
+    <property name="title">
+     <string>Upload</string>
+    </property>
+    <addaction name="action_upload_to_fb"/>
+   </widget>
+   <widget class="QMenu" name="menuExit">
+    <property name="title">
+     <string>Exit</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menuView">
+    <property name="title">
+     <string>View</string>
+    </property>
+    <addaction name="separator"/>
+    <addaction name="action_hide_failed_videos"/>
+   </widget>
+   <addaction name="menufrf"/>
+   <addaction name="menuUpload"/>
+   <addaction name="menuView"/>
+   <addaction name="menuExit"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <action name="action_download_video">
+   <property name="text">
+    <string>Single Video</string>
+   </property>
+  </action>
+  <action name="action_download_videos">
+   <property name="text">
+    <string>Multiple Video</string>
+   </property>
+  </action>
+  <action name="action_upload_to_fb">
+   <property name="text">
+    <string>To Facebook</string>
+   </property>
+  </action>
+  <action name="action_stop_download">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Stop</string>
+   </property>
+  </action>
+  <action name="action_hide_failed_videos">
+   <property name="text">
+    <string>Hide failed videos</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>

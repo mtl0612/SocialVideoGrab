@@ -1,7 +1,7 @@
-from PyQt5.QtCore import Qt, pyqtSlot, QSize
-from PyQt5.QtWidgets import QMainWindow, QApplication, QWidget
+from PyQt5.QtCore import QSize
+from PyQt5.QtWidgets import QWidget
 
-from ui.ui_account_list_widget import Ui_AccountListWidget
+from ui.account_list_widget_ui import Ui_AccountListWidget
 
 class AccountListController(QWidget):
     def __init__(self, *args, **kwargs):

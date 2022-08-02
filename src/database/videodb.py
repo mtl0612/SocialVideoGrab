@@ -2,7 +2,6 @@
 import logging
 import os
 
-print(os.getcwd())
 # Third party imports
 from sqlalchemy import MetaData
 from sqlalchemy import create_engine
@@ -12,20 +11,20 @@ from sqlalchemy.orm import sessionmaker
 
 # Local application imports
 from database.models import Base
+from config import Config
 
-logging.basicConfig(level=logging.ERROR)
-
+logger = logging.getLogger(__name__)
+logger.setLevel("INFO")
 db_log_file_name = 'db.log'
 db_handler_log_level = logging.INFO
 
-db_handler = logging.FileHandler(db_log_file_name)
-db_handler.setLevel(db_handler_log_level)
-formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-db_handler.setFormatter(formatter)
+# db_handler = logging.FileHandler(db_log_file_name)
+# db_handler.setLevel(db_handler_log_level)
+# formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+# db_handler.setFormatter(formatter)
 db_logger = logging.getLogger('sqlalchemy')
-db_logger.addHandler(db_handler)
-db_logger.propagate = False
-
+# db_logger.addHandler(db_handler)
+# db_logger.propagate = False
 SQLITE = 'sqlite'
 
 
@@ -46,24 +45,25 @@ class FacebookVideoDatabase:
     # Main DB Connection Ref Obj
     db_engine = None
 
-    def __init__(self, dbtype='sqlite', username='', password='', dbname='truyenfull.db'):
+    def __init__(self, dbtype='sqlite', username='', password='', dbname='facebookvideo.db'):
         dbtype = dbtype.lower()
-        logging.debug('dbtype is %s' % dbtype)
+        logger.debug('dbtype is %s' % dbtype)
         if dbtype in self.DB_ENGINE.keys():
-            db_path = os.path.join(os.environ['db_dir'], dbname)
+            db_path = os.path.join(Config.get_or_else('FOLDER', 'DB_DIR', '../db/'), dbname)
             engine_url = self.DB_ENGINE[dbtype].format(DB=db_path)
-            logging.debug("engine_url is %s" % engine_url)
-            self.db_engine = create_engine(engine_url)
-            logging.debug(self.db_engine)
+            logger.debug("engine_url is %s" % engine_url)
+            self.db_engine = create_engine(engine_url, connect_args={'check_same_thread': False})
+            logger.debug(self.db_engine)
             self.metadata = MetaData()
             Session = sessionmaker(bind=self.db_engine)
             self.session = Session()
+            self.create_db_tables()
         else:
             print("DBType is not found in DB_ENGINE")
 
     def create_db_tables(self):
         try:
-            Base.metadata.create_all(self.db_engine)
+            Base.metadata.create_all(self.db_engine,checkfirst=True)
         except Exception as e:
             print("Error occurred during Table creation!")
             print(e)
